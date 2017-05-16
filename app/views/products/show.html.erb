@@ -23,13 +23,23 @@
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
         </dl>
-        <dl class="dl-horizontal"></dl>
-        <% @product.reviews.each do |review| %>
-        <dt>Rating</dt>
-        <dd><%= review.rating %></dd>
-        <dt>Description</dt>
-        <dd><%= review.description %></dd>
-      <% end %>
+        <dl class="dl-horizontal">
+          <% @product.reviews.each do |review| %>
+          <dt>Rating</dt>
+          <dd><%= review.rating %></dd>
+          <dt>Description</dt>
+          <dd><%= review.description %></dd>
+          <% end %>
+          <div class="form-group">
+            <%= form_for [@product, Review.new] do |form| %>
+              <%= form.label :review %>
+              <%= form.text_area :description, class: 'form-control' %>
+              <%= form.label :rating %>
+              <%= select_tag(:rating, options_for_select(1..5)) %>
+              <%= form.submit 'Create Review', class: 'btn btn-primary' %>
+            <% end %>
+          </div>
+        </dl>
       </div>
     </div>
 
