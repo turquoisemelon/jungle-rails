@@ -7,10 +7,15 @@ class OrdersController < ApplicationController
   def create
     charge = perform_stripe_charge
     order  = create_order(charge)
+    # order.user = current_user
 
     if order.valid?
       empty_cart!
       redirect_to order, notice: 'Your Order has been placed.'
+
+      # Tell the UserMailer to send a confirmation email after order has been placed
+      UserMailer.orderconf_email(@order).deliver_later
+
     else
       redirect_to cart_path, error: order.errors.full_messages.first
     end
